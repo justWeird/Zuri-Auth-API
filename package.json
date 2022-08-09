@@ -12,16 +12,18 @@
     "url": "git+https://github.com/justWeird/Zuri-Auth-API.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Joseph Fadiji",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/justWeird/Zuri-Auth-API/issues"
   },
   "homepage": "https://github.com/justWeird/Zuri-Auth-API#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-validator": "^6.14.2",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.1"
   }
 }

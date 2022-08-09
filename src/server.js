@@ -15,7 +15,7 @@ const app = express();
 app.use(express.json());
 
 //set the routes from the router folder
-app.use("/", router);
+app.use('/auth', router);
 
 //set the server to listen at particular ports
 const PORT = process.env.PORT || 3000;
