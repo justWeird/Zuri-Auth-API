@@ -2,6 +2,7 @@
 const authModel = require("../model/userModel");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
+const bcrypt = require("bcrypt");
 
 //create all controller functions
 //create new user
@@ -74,14 +75,14 @@ exports.login = async (req, res) => {
 
     //generate login token for authorization
     const payload = {
-      id: (await createNewUser)._id,
-      firstName: createNewUser.firstName,
-      lastName: createNewUser.lastName,
-      role: createNewUser.role,
+      id: (await chckUser)._id,
+      firstName: chckUser.firstName,
+      lastName: chckUser.lastName,
+      role: chckUser.role,
     };
 
     const tempToken = jwt.sign(payload, process.env.SECRET_KEY, {
-      expiresIn: process.env.EXPIRY,
+      expiresIn: Number(process.env.EXPIRY),
     });
 
     //finally return the required data. token is used to navigate othe routes
@@ -165,16 +166,17 @@ exports.getAdmin = async (req, res) => {
 exports.passRecover = async (req, res) => {
   try {
     //use req.user to obtain currently logged in user
-    const currUser = authModel.findOne({ email: req.user.email });
+    const currUser = await authModel.findOne({ email: req.user.email });
     //clear previous password
-    currUser.password = "";
+    // currUser.password = "";
+    // currUser = await currUser.save();
 
     //create new password hash from default password
     //encrypt password and store in database
     const formSalt = await bcrypt.genSalt(10);
     const formHash = await bcrypt.hash(process.env.DEFAULT_PASS, formSalt);
     currUser.password = formHash;
-    currUser.save();
+    currUser = await currUser.save();
     //output data to user
     res.status(200).json({
       message: "Password successfully reset. Use Default Password",

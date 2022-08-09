@@ -1,8 +1,13 @@
 //import all the required modules
 const express = require("express");
 const authController = require("../controller/authController");
-const { authenticateUser, checkIfStaff, checkIfUser, checkIfManager, checkIfAdmin } = require("../middleware/authentication");
-
+const {
+  authenticateUser,
+  checkIfStaff,
+  checkIfUser,
+  checkIfManager,
+  checkIfAdmin,
+} = require("../middleware/authentication");
 
 //initialize router
 const router = express.Router();
@@ -30,7 +35,12 @@ router.get("/staff", authenticateUser, checkIfStaff, authController.getStaff);
 
 //@route    get logged in manager
 //@desc     authenticaton exists, protected route
-router.get( "/manager", authenticateUser, checkIfManager, authController.getManager);
+router.get(
+  "/manager",
+  authenticateUser,
+  checkIfManager,
+  authController.getManager
+);
 
 //@route    get logged in admin
 //@desc     authenticaton exists, protected route
@@ -40,3 +50,4 @@ router.get("/admin", authenticateUser, checkIfAdmin, authController.getAdmin);
 //@desc     authenticaton exists, protected route
 router.get("/recoverPass", authenticateUser, authController.passRecover);
 
+module.exports = router;

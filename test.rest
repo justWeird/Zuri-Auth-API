@@ -1,0 +1,22 @@
+POST http://localhost:5000/auth/signup HTTP/1.1
+Content-Type: application/json
+
+{
+    "firstName": "Ace",
+    "lastName": "Devon",
+    "email": "mrpeanutbutter",
+    "password": "peanutButter"
+}
+
+###
+POST http://localhost:5000/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "mrpeanutbutter",
+    "password": "peanutButter"
+}
+
+###
+GET http://localhost:5000/auth/user HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyZjFiMzQxMjg2Zjk5ODdlM2EwMDBkNCIsImZpcnN0TmFtZSI6IkFjZSIsImxhc3ROYW1lIjoiRGV2b24iLCJyb2xlIjoiVXNlciIsImlhdCI6MTY2MDAwODA3OCwiZXhwIjoxNjYwMDExNjc4fQ.ni7dUqO9BurESDWQ_3xeJr3Q7td65-Esmqa2HUGqGOY
