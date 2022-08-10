@@ -48,6 +48,6 @@ router.get("/admin", authenticateUser, checkIfAdmin, authController.getAdmin);
 
 //@route    get logged in admin
 //@desc     authenticaton exists, protected route
-router.get("/recoverPass", authenticateUser, authController.passRecover);
+router.put("/recoverPass", authenticateUser, authController.passRecover);
 
 module.exports = router;

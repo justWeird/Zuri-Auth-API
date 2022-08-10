@@ -32,6 +32,10 @@ const authSchema = mongoose.Schema({
 
 }, { timestamp: true });
 
+//this is a command to select which database in a cluster to use
+// const selectDB = mongoose.connection.useDb("Practice")
+
+//auth-api refers to the collection created in a particular db (as specified above)
 const authModel = mongoose.model("auth-api", authSchema);
 
 module.exports = authModel;

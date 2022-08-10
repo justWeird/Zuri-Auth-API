@@ -3,6 +3,7 @@ const authModel = require("../model/userModel");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
 const bcrypt = require("bcrypt");
+const defPass = process.env.DEFAULT_PASS
 
 //create all controller functions
 //create new user
@@ -166,17 +167,16 @@ exports.getAdmin = async (req, res) => {
 exports.passRecover = async (req, res) => {
   try {
     //use req.user to obtain currently logged in user
-    const currUser = await authModel.findOne({ email: req.user.email });
-    //clear previous password
-    // currUser.password = "";
-    // currUser = await currUser.save();
+    const currUser = await authModel.findOne({ _id: req.user.id });
+
+    console.log(currUser)
 
     //create new password hash from default password
     //encrypt password and store in database
     const formSalt = await bcrypt.genSalt(10);
-    const formHash = await bcrypt.hash(process.env.DEFAULT_PASS, formSalt);
+    const formHash = await bcrypt.hash(defPass, formSalt);
     currUser.password = formHash;
-    currUser = await currUser.save();
+    currUser.save();
     //output data to user
     res.status(200).json({
       message: "Password successfully reset. Use Default Password",
