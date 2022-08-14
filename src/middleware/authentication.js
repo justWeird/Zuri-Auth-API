@@ -1,6 +1,7 @@
 //import all required modules
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
+const tokenModel = require("../model/userModel");
 
 //create authentication middleware using token to authorize routes
 exports.authenticateUser = async (req, res, next) => {
@@ -21,15 +22,21 @@ exports.authenticateUser = async (req, res, next) => {
       });
     }
     let token = splitReqHead[1];
-    //use jwt to decode
-    const tempToken = jwt.verify(token, process.env.SECRET_KEY);
-    //if decoding fails, let user know
-    if (!tempToken) {
-      return res.status(400).json({
-        message: "Invalid authorization token. Login again",
-      });
+
+    //if the token is in the invalid database, then do not decode it
+    const invTkn = await tokenModel.findOne({ token: token });
+
+    if (typeof (invTkn) !== "undefined") {
+      //use jwt to decode
+      const tempToken = jwt.verify(token, process.env.SECRET_KEY);
+      //if decoding fails, let user know
+      if (!tempToken) {
+        return res.status(400).json({
+          message: "Invalid authorization token. Login again",
+        });
+      }
+      req.user = tempToken;
     }
-    req.user = tempToken;
     next();
   } catch (error) {
     res.status(500).json({

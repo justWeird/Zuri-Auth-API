@@ -23,7 +23,7 @@ router.post("/login", authController.login);
 
 //@route    logout
 //@desc     authentication exists, not role-protected
-router.post("/logout", authenticateUser, authController.logout);
+router.put("/logout", authenticateUser, authController.logout);
 
 //@route    get logged in user
 //@desc     authenticaton exists, protected route

@@ -1,9 +1,10 @@
 // import all important modules
 const authModel = require("../model/userModel");
+const tokenModel = require("../model/userModel");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
 const bcrypt = require("bcrypt");
-const defPass = process.env.DEFAULT_PASS
+const defPass = process.env.DEFAULT_PASS;
 
 //create all controller functions
 //create new user
@@ -102,7 +103,32 @@ exports.login = async (req, res) => {
 //create logout function
 exports.logout = async (req, res) => {
   try {
-    //expire the token
+    //get the token from the current user
+    const reqHead = req.headers.authorization;
+    if (!reqHead) {
+      return res.status(400).json({
+        message: "Authentication absent from logout",
+      });
+    }
+    //since authentication head exists, proceed to obtain token
+    const splitReqHead = reqHead.split(" ");
+    //validate authorization format
+    if (splitReqHead[0] !== "Bearer") {
+      return res.status(400).json({
+        message: "Authorization format is incorrect for logout",
+      });
+    }
+    
+    let invToken = splitReqHead[1];
+    //add token to database
+    const invTknDB = await tokenModel.create({
+      token: invToken
+    })
+    //finally return the required data
+    res.status(200).json({
+      message: "Logout User Successful",
+    });
+
   } catch (error) {
     res.status(500).json({
       message: "Internal server error",
@@ -169,7 +195,7 @@ exports.passRecover = async (req, res) => {
     //use req.user to obtain currently logged in user
     const currUser = await authModel.findOne({ _id: req.user.id });
 
-    console.log(currUser)
+    console.log(currUser);
 
     //create new password hash from default password
     //encrypt password and store in database
