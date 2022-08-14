@@ -39,4 +39,5 @@ I utilised the REST client extension in VSCode. Thus the requests are in **test.
 ### Password recovery.
 
 The implementation is very simple and goes straight into replacing the previously saved password with a default password. This can be changed to accomodate few extra steps such as validation and random new default password
+
 ![Reset](https://user-images.githubusercontent.com/51035289/184552538-c732daba-6762-4084-b8c6-03e5425c1d1e.png)
